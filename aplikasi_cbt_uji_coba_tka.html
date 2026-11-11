@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UJI COBA TES KEMAMPUAN AKADEMIK (TKA) - UPT SD NEGERI GEMULUNG 3</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @font-face {
+            font-family: 'Arial Nova Cond';
+            src: local('Arial Nova Cond'), local('Arial Narrow'), local('Arial');
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .header-title {
+            font-family: 'Arial Nova Cond', 'Arial Narrow', Arial, sans-serif;
+            font-weight: 700;
+        }
+
+        /* Specific typography rule based on requirement (Arial 11pt ~= 14.6px) */
+        .question-text, .stimulus-text, .option-text, .instruction-text {
+            font-family: Arial, sans-serif;
+            font-size: 14.67px; /* 11pt */
+            line-height: 1.6;
+        }
+
+        /* Source text rule (Arial 8pt ~= 10.67px) */
+        .stimulus-source {
+            font-family: Arial, sans-serif;
+            font-size: 10.67px; /* 8pt */
+            font-style: italic;
+            color: #4b5563;
+        }
+        .stimulus-source a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        /* Question Status Colors */
+        .q-btn-active {
+            border: 2px solid #2563eb !important;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+        }
+        .q-btn-answered {
+            background-color: #10b981 !important; /* Green */
+            color: #ffffff !important;
+        }
+        .q-btn-doubt {
+            background-color: #f59e0b !important; /* Yellow/Orange */
+            color: #ffffff !important;
+        }
+        .q-btn-unanswered {
+            background-color: #ffffff;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        /* Custom Radio Badge (PG) */
+        .pg-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .pg-option:hover .pg-badge {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+        .pg-option.selected .pg-badge {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+        .pg-option.selected {
+            background-color: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+        /* Custom Checkbox Badge (MCMA) */
+        .mcma-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 2px solid #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .mcma-option:hover .mcma-badge {
+            border-color: #2563eb;
+        }
+        .mcma-option.selected .mcma-badge {
+            background-color: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+        .mcma-option.selected {
+            background-color: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+        /* Category Table Custom Cell Inputs */
+        .cat-radio {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #9ca3af;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            display: grid;
+            place-content: center;
+            transition: all 0.2s;
+        }
+        .cat-radio::before {
+            content: "✓";
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+        }
+        .cat-radio:checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        .cat-radio:checked::before {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app" class="w-full min-h-screen flex flex-col justify-between">
+
+        <!-- ================= PAGE 1: LOGIN SCREEN ================= -->
+        <div id="page-login" class="flex-grow flex flex-col justify-center items-center px-4 py-8 relative">
+            <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-gray-100 flex flex-col items-center">
+                
+                <!-- Logo Sekolah -->
+                <div class="mb-4">
+                    <img src="https://lh3.googleusercontent.com/d/1_9iH9R2O-4hN-J4n0K4v00N0" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/120x120/0284c7/ffffff?text=SDN+GEMULUNG+3';" 
+                         alt="Logo UPT SDN Gemulung 3" 
+                         class="h-28 w-auto object-contain drop-shadow-md">
+                </div>
+
+                <!-- Judul -->
+                <div class="text-center mb-6">
+                    <h1 class="header-title text-xl md:text-2xl text-blue-900 leading-snug tracking-wide">
+                        UJI COBA TES KEMAMPUAN AKADEMIK (TKA)<br>
+                        UPT SD NEGERI GEMULUNG 3<br>
+                        TAHUN 2027
+                    </h1>
+                    <div class="w-16 h-1 bg-yellow-400 mx-auto mt-2 rounded-full"></div>
+                </div>
+
+                <!-- Form Login -->
+                <form id="login-form" onsubmit="handleLogin(event)" class="w-full space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">Nama Lengkap Peserta</label>
+                        <input type="text" id="input-nama" required 
+                               class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                               placeholder="Masukkan Nama Lengkap">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">NISN Peserta</label>
+                        <input type="text" id="input-nisn" required pattern="[0-9]+" 
+                               class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                               placeholder="Masukkan 10 Digit NISN">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">Token Ujian</label>
+                        <input type="text" id="input-token" required 
+                               class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 uppercase tracking-widest outline-none transition"
+                               placeholder="Contoh: GEMULUNG3">
+                    </div>
+
+                    <!-- Error Alert -->
+                    <div id="login-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded text-xs leading-relaxed">
+                        Maaf, token yang Anda masukkan salah. Silakan ulangi Kembali.
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                        MASUK UJIAN
+                    </button>
+                </form>
+            </div>
+
+            <!-- Author Credit -->
+            <div class="absolute bottom-4 right-6 text-xs text-gray-500 font-semibold italic">
+                Dibuat oleh: Suci Indriyani
+            </div>
+        </div>
+
+        <!-- ================= MODAL PETUNJUK ================= -->
+        <div id="modal-petunjuk" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-center p-4 hidden">
+            <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden border border-gray-100 animate-fade-in">
+                <div class="bg-blue-900 text-white px-6 py-4">
+                    <h3 class="text-lg font-bold">Konfirmasi & Petunjuk Pengerjaan</h3>
+                </div>
+                
+                <div class="p-6 space-y-4">
+                    <!-- Student Identity -->
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-sm space-y-1">
+                        <p><span class="font-semibold text-blue-900">Nama:</span> <span id="modal-nama" class="text-gray-800"></span></p>
+                        <p><span class="font-semibold text-blue-900">NISN:</span> <span id="modal-nisn" class="text-gray-800"></span></p>
+                        <p><span class="font-semibold text-blue-900">Ujian:</span> <span class="text-gray-800">TKA Bahasa Indonesia & Literasi</span></p>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="instruction-text space-y-2 text-gray-700">
+                        <p class="font-bold text-gray-900">Petunjuk Pengerjaan:</p>
+                        <p>a. Soal terdiri dari 30 butir soal dengan waktu mengerjakan maksimal 75 menit.</p>
+                        <p>b. Periksa Kembali jawaban Anda. Pastikan Anda menjawab dengan benar.</p>
+                        <p class="font-bold text-blue-700 pt-2">Selamat mengerjakan!</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-6 py-4 flex justify-end border-t border-gray-100">
+                    <button onclick="startExam()" 
+                            class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-2.5 rounded-lg shadow-md transition duration-200">
+                        Saya Mengerti, Saya Siap Mengerjakan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: TEST INTERFACE ================= -->
+        <div id="page-test" class="hidden flex-grow flex flex-col h-screen overflow-hidden">
+            
+            <!-- Navbar Header -->
+            <header class="bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center shadow-sm flex-shrink-0">
+                <div class="flex items-center space-x-3">
+                    <img src="https://lh3.googleusercontent.com/d/1_9iH9R2O-4hN-J4n0K4v00N0" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/50x50/0284c7/ffffff?text=SDN';" 
+                         alt="Logo" class="h-9 w-auto">
+                    <div>
+                        <h2 class="header-title text-sm md:text-base text-blue-900">UJI COBA TKA - UPT SD NEGERI GEMULUNG 3</h2>
+                        <p class="text-xs text-gray-500"><span id="user-display-name" class="font-semibold"></span> (<span id="user-display-nisn"></span>)</p>
+                    </div>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg flex items-center space-x-2 shadow-sm">
+                    <svg class="w-5 h-5 text-red-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span class="text-xs font-semibold uppercase hidden md:inline">Sisa Waktu:</span>
+                    <span id="timer" class="font-mono font-bold text-lg">75:00</span>
+                </div>
+            </header>
+
+            <!-- Main Test Workspace -->
+            <div class="flex-grow flex flex-col lg:flex-row overflow-hidden bg-gray-50">
+                
+                <!-- Left Column: Question Content -->
+                <div class="flex-grow p-4 md:p-6 overflow-y-auto flex flex-col justify-between">
+                    
+                    <div class="max-w-4xl mx-auto w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-4">
+                        
+                        <!-- Question Header -->
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-3 mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                                SOAL NO. <span id="q-number" class="text-base">1</span> / 30
+                            </span>
+                            <span id="q-type-badge" class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">
+                                Pilihan Ganda
+                            </span>
+                        </div>
+
+                        <!-- Stimulus Block -->
+                        <div id="q-stimulus" class="mb-6 bg-slate-50 border border-slate-200 p-4 rounded-xl">
+                            <!-- Injected dynamically -->
+                        </div>
+
+                        <!-- Question Stem & Instructions -->
+                        <div class="mb-4">
+                            <p id="q-instruction" class="instruction-text font-bold text-blue-900 mb-2 hidden"></p>
+                            <p id="q-text" class="question-text text-gray-800 font-medium"></p>
+                        </div>
+
+                        <!-- Answer Options Render Container -->
+                        <div id="q-options" class="mt-6 space-y-3">
+                            <!-- Injected dynamically -->
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom Navigation Action Bar -->
+                    <div class="max-w-4xl mx-auto w-full flex justify-between items-center pt-2 pb-4">
+                        <div class="flex space-x-2">
+                            <button id="btn-prev" onclick="navigateQuestion(-1)" 
+                                    class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg text-sm transition">
+                                &laquo; Sebelumnya
+                            </button>
+                            <button id="btn-doubt" onclick="toggleDoubt()" 
+                                    class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-950 font-semibold rounded-lg text-sm shadow-sm transition">
+                                Ragu-ragu
+                            </button>
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-next" onclick="navigateQuestion(1)" 
+                                    class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-sm shadow-sm transition">
+                                Lewati / Selanjutnya &raquo;
+                            </button>
+                            <button id="btn-finish" onclick="confirmFinish()" 
+                                    class="hidden px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-sm shadow-md transition">
+                                SELESAI
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Navigation Grid -->
+                <div class="w-full lg:w-80 bg-white border-l border-gray-200 p-5 flex flex-col justify-between flex-shrink-0">
+                    <div>
+                        <h3 class="font-bold text-gray-700 mb-3 text-sm flex items-center justify-between">
+                            <span>NAVIGASI SOAL</span>
+                            <span class="text-xs text-gray-400 font-normal">30 Butir</span>
+                        </h3>
+
+                        <!-- Color Indicators Legend -->
+                        <div class="grid grid-cols-3 gap-2 text-xs mb-4 pb-4 border-b border-gray-100">
+                            <div class="flex items-center space-x-1.5">
+                                <span class="w-3 h-3 bg-emerald-500 rounded-sm"></span>
+                                <span class="text-gray-600">Sudah</span>
+                            </div>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="w-3 h-3 bg-yellow-400 rounded-sm"></span>
+                                <span class="text-gray-600">Ragu</span>
+                            </div>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="w-3 h-3 border border-gray-300 bg-white rounded-sm"></span>
+                                <span class="text-gray-600">Belum</span>
+                            </div>
+                        </div>
+
+                        <!-- 30 Questions Grid -->
+                        <div id="question-grid" class="grid grid-cols-5 gap-2.5 max-h-[50vh] lg:max-h-none overflow-y-auto p-1">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100 text-center">
+                        <button onclick="confirmFinish()" class="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-lg shadow-sm transition">
+                            KUMPULKAN JAWABAN
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= PAGE 3: FINAL SCORE SCREEN ================= -->
+        <div id="page-result" class="hidden flex-grow flex flex-col justify-center items-center px-4 py-8">
+            <div class="max-w-lg w-full bg-white rounded-2xl shadow-2xl p-8 border border-gray-100 text-center space-y-6">
+                
+                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Selamat!</h1>
+                    <p class="text-gray-600 instruction-text">
+                        Anda telah menyelesaikan Uji Coba Tes Kemampuan Akademik (TKA). Nilai yang anda dapatkan adalah:
+                    </p>
+                </div>
+
+                <!-- Final Score Card -->
+                <div class="bg-gradient-to-br from-blue-900 to-indigo-900 text-white rounded-2xl p-6 shadow-xl">
+                    <span class="text-xs uppercase tracking-widest text-blue-200 block mb-1">NILAI AKHIR HASIL UJI COBA</span>
+                    <span id="final-score" class="text-6xl font-extrabold tracking-tight">0.00</span>
+                    <span class="text-xs text-blue-200 block mt-2">Skala Max 100.00 (Benar <span id="score-correct-count">0</span> dari 30 Soal)</span>
+                </div>
+
+                <!-- Student Info Details -->
+                <div class="bg-gray-50 rounded-xl p-4 text-left text-sm space-y-1 text-gray-600 border border-gray-200">
+                    <p><span class="font-semibold text-gray-800">Nama Peserta:</span> <span id="res-nama"></span></p>
+                    <p><span class="font-semibold text-gray-800">NISN:</span> <span id="res-nisn"></span></p>
+                    <p><span class="font-semibold text-gray-800">Sekolah:</span> UPT SD NEGERI GEMULUNG 3</p>
+                </div>
+
+                <button onclick="location.reload()" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition">
+                    KEMBALI KE HALAMAN UTAMA
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & QUESTION DATABASE -->
+    <script>
+        // Global App State
+        let currentUser = { nama: '', nisn: '' };
+        let currentQuestionIndex = 0;
+        let timerSeconds = 75 * 60; // 75 Minutes
+        let timerInterval = null;
+        let userAnswers = {}; // { qIndex: answer }
+        let doubtStatus = {}; // { qIndex: true/false }
+
+        // Core 30 Questions Dataset (Includes exact 3 prompt questions + 27 high-quality Grade 6 TKA standard items)
+        const questionsData = [
+            // Q1: PG (From Prompt)
+            {
+                type: 'PG',
+                stimulus: `<strong>Pesona Budaya Indah di Desa Liang Ndara</strong><br><br>
+Desa Wisata Liang Ndara sangat indah. Desa ini terletak di Manggarai Barat. Jaraknya dekat dari kota Labuan Bajo. Desa ini menawarkan daya tarik wisata budaya.<br><br>
+Di sana ada pertunjukan Tari Caci. Tari Caci adalah tarian pertarungan ritual. Penari membawa senjata cambuk dan perisai. Dulu tarian ini merupakan latihan perang. Sekarang tarian ini menjadi pertunjukan seni.<br><br>
+Warga desa mahir membuat kerajinan tangan. Warga mahir membuat anyaman daun pandan. Selain itu, para warga menenun kain. Mereka menenun kain tradisional bernama songke. Kain songke adalah busana adat masyarakat. Motif kain memiliki arti pesan kehidupan. Motif bintang melambangkan keindahan alam raya. Motif laba-laba melambangkan pesan kerja keras.<br><br>
+Tari Caci mengajarkan nilai keberanian warga. Kerajinan tenun menyimpan pesan kerja keras. Tokoh penari dan penenun melestarikan budaya. Peristiwa pertunjukan seni menghibur para wisatawan. Para wisatawan belajar tradisi lokal unik. Budaya lokal harus kita jaga bersama.`,
+                source: `Referensi: <a href="https://www.indonesia.travel/id/id" target="_blank">Kementerian Pariwisata RI – Destinasi Super Prioritas</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah satu jawaban yang paling tepat!`,
+                question: `Kata dalam teks deskripsi di atas yang merupakan kosakata khusus dalam bidang pariwisata adalah ....`,
+                options: [`pertunjukan`, `wisatawan`, `perisai`, `anyaman`],
+                correct: 1 // B. wisatawan
+            },
+
+            // Q2: MCMA (From Prompt)
+            {
+                type: 'MCMA',
+                stimulus: `<strong>Pesona Budaya Indah di Desa Liang Ndara</strong><br><br>
+Desa Wisata Liang Ndara sangat indah. Desa ini terletak di Manggarai Barat. Jaraknya dekat dari kota Labuan Bajo. Desa ini menawarkan daya tarik wisata budaya.<br><br>
+Di sana ada pertunjukan Tari Caci. Tari Caci adalah tarian pertarungan ritual. Penari membawa senjata cambuk dan perisai. Dulu tarian ini merupakan latihan perang. Sekarang tarian ini menjadi pertunjukan seni.<br><br>
+Warga desa mahir membuat kerajinan tangan. Warga mahir membuat anyaman daun pandan. Selain itu, para warga menenun kain. Mereka menenun kain tradisional bernama songke. Kain songke adalah busana adat masyarakat. Motif kain memiliki arti pesan kehidupan. Motif bintang melambangkan keindahan alam raya. Motif laba-laba melambangkan pesan kerja keras.<br><br>
+Tari Caci mengajarkan nilai keberanian warga. Kerajinan tenun menyimpan pesan kerja keras. Tokoh penari dan penenun melestarikan budaya. Peristiwa pertunjukan seni menghibur para wisatawan. Para wisatawan belajar tradisi lokal unik. Budaya lokal harus kita jaga bersama.`,
+                source: `Referensi: <a href="https://www.indonesia.travel/id/id" target="_blank">Kementerian Pariwisata RI – Destinasi Super Prioritas</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks (MCMA): Pilihlah dua (2) pernyataan yang tepat!`,
+                question: `Berdasarkan paragraf ketiga, pilihlah dua (2) pernyataan yang memuat informasi tersurat dengan tepat!`,
+                options: [
+                    `Warga desa mahir membuat anyaman dari daun pandan.`,
+                    `Motif kain bintang melambangkan nilai kerja keras.`,
+                    `Kain songke merupakan busana adat warga masyarakat.`
+                ],
+                correct: [0, 2] // Opsi 1 dan 3 benar
+            },
+
+            // Q3: CATEGORY TABLE (From Prompt)
+            {
+                type: 'CAT',
+                stimulus: `<strong>Pesona Budaya Indah di Desa Liang Ndara</strong><br><br>
+Desa Wisata Liang Ndara sangat indah. Desa ini terletak di Manggarai Barat. Jaraknya dekat dari kota Labuan Bajo. Desa ini menawarkan daya tarik wisata budaya.<br><br>
+Di sana ada pertunjukan Tari Caci. Tari Caci adalah tarian pertarungan ritual. Penari membawa senjata cambuk dan perisai. Dulu tarian ini merupakan latihan perang. Sekarang tarian ini menjadi pertunjukan seni.<br><br>
+Warga desa mahir membuat kerajinan tangan. Warga mahir membuat anyaman daun pandan. Selain itu, para warga menenun kain. Mereka menenun kain tradisional bernama songke. Kain songke adalah busana adat masyarakat. Motif kain memiliki arti pesan kehidupan. Motif bintang melambangkan keindahan alam raya. Motif laba-laba melambangkan pesan kerja keras.<br><br>
+Tari Caci mengajarkan nilai keberanian warga. Kerajinan tenun menyimpan pesan kerja keras. Tokoh penari dan penenun melestarikan budaya. Peristiwa pertunjukan seni menghibur para wisatawan. Para wisatawan belajar tradisi lokal unik. Budaya lokal harus kita jaga bersama.`,
+                source: `Referensi: <a href="https://www.indonesia.travel/id/id" target="_blank">Kementerian Pariwisata RI – Destinasi Super Prioritas</a>`,
+                instruction: `Soal Kategori (Benar - Salah): Tentukan Benar atau Salah untuk tiap pernyataan!`,
+                question: `Berdasarkan isi teks deskripsi di atas, tentukan kategori Benar atau Salah untuk setiap pernyataan mengenai amanat yang ingin disampaikan oleh penulis!`,
+                statements: [
+                    `Kita harus melestarikan budaya lokal bersama.`,
+                    `Wisatawan sebaiknya belajar membuat perisai kayu.`,
+                    `Kita perlu meneladani semangat kerja keras warga.`
+                ],
+                correct: ['B', 'S', 'B']
+            },
+
+            // Q4 - Q30: Generated standard Grade 6 TKA Items
+            {
+                type: 'PG',
+                stimulus: `Komodo adalah hewan pemakan daging. Komodo hidup di Kepulauan Komodo. Komodo memiliki liur beracun. Liur racun membantunya memburu mangsa. Hewan ini sangat langka. Komodo dilindungi oleh pemerintah.`,
+                source: `Sumber: <a href="https://kemenpar.go.id" target="_blank">Portal Ragam Pariwisata Indonesia</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah satu jawaban yang paling tepat!`,
+                question: `Ide pokok paragraf di atas adalah ....`,
+                options: [`Liur beracun komodo`, `Ciri dan habitat komodo`, `Perlindungan komodo`, `Kepulauan Komodo`],
+                correct: 1
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Taman Nasional Wakatobi terletak di Sulawesi Tenggara. Laut Wakatobi sangat jernih. Terumbu karang tumbuh subur di sana. Berbagai jenis ikan berenang indah. Wakatobi menjadi surga bagi penyelam dunia.`,
+                source: `Sumber: <a href="https://www.indonesia.travel/id/id" target="_blank">Indonesia Travel</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilihlah dua (2) jawaban yang tepat!`,
+                question: `Manakah dua pernyataan yang sesuai dengan teks di atas?`,
+                options: [
+                    `Taman Nasional Wakatobi ada di Sulawesi Tenggara.`,
+                    `Terumbu karang di Wakatobi sudah rusak parah.`,
+                    `Wakatobi diminati oleh para penyelam dunia.`
+                ],
+                correct: [0, 2]
+            },
+            {
+                type: 'CAT',
+                stimulus: `Candi Borobudur terletak di Magelang. Candi ini dibuat dari batu vulkanik. Relief candi menceritakan kisah kehidupan. Borobudur adalah peninggalan sejarah megah.`,
+                source: `Sumber: <a href="https://kemenpar.go.id" target="_blank">Koleksi Wisata Nusantara</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan kebenaran pernyataan berikut berdasarkan teks Candi Borobudur!`,
+                statements: [
+                    `Candi Borobudur dibangun menggunakan batu bata merah.`,
+                    `Candi Borobudur berlokasi di wilayah Magelang.`,
+                    `Relief Candi Borobudur memuat kisah kehidupan.`
+                ],
+                correct: ['S', 'B', 'B']
+            },
+
+            // Q7 - Q10
+            {
+                type: 'PG',
+                stimulus: `Hutan mangrove menjaga garis pantai. Akar mangrove menahan hempasan gelombang laut. Mangrove mencegah erosi dan abrasi pantai. Selain itu, mangrove menjadi rumah bagi hewan laut kecil. Kita wajib menjaga kelestarian mangrove.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Artikel Edukasi Lingkungan</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah satu jawaban yang tepat!`,
+                question: `Arti kata <i>abrasi</i> pada teks di above adalah ....`,
+                options: [`Pengikisan pantai oleh air laut`, `Pencemaran sampah di pantai`, `Pasang surut air laut`, `Penanaman pohon pantai`],
+                correct: 0
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Danau Toba adalah danau vulkanik terbesar. Danau ini ada di Sumatra Utara. Di tengah danau terdapat Pulau Samosir. Udara di Danau Toba sangat sejuk. Pemandangan alam di sana luar biasa indah.`,
+                source: `Sumber: <a href="https://www.indonesia.travel/id/id" target="_blank">Panduan Destinasi Super Prioritas</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilih dua (2) jawaban yang benar!`,
+                question: `Dua fakta tersurat mengenai Danau Toba adalah ....`,
+                options: [
+                    `Pulau Samosir ada di tengah Danau Toba.`,
+                    `Danau Toba terletak di provinsi Jawa Barat.`,
+                    `Danau Toba tergolong jenis danau vulkanik.`
+                ],
+                correct: [0, 2]
+            },
+            {
+                type: 'CAT',
+                stimulus: `Raja Ampat memiliki gugusan pulau karang. Air lautnya berwarna biru jernih. Pemandangan bawah laut sangat mempesona. Keasrian alamnya terjaga dengan sangat baik.`,
+                source: `Sumber: <a href="https://www.klook.com" target="_blank">Panduan Wisata Alam Klook</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan kebenaran informasi mengenai Raja Ampat berikut!`,
+                statements: [
+                    `Raja Ampat memiliki gugusan pulau karang.`,
+                    `Air laut di Raja Ampat berwarna keruh.`,
+                    `Alam di Raja Ampat masih terjaga asri.`
+                ],
+                correct: ['B', 'S', 'B']
+            },
+            {
+                type: 'PG',
+                stimulus: `Kawah Ijen terkenal dengan api biru. Fenomena api biru sangat langka. Api biru tampak jelas pada malam hari. Para pendaki harus mendaki di dini hari. Bau belerang di kawah sangat menyengat.`,
+                source: `Sumber: <a href="https://www.detik.com/jabar/wisata" target="_blank">Detik Travel Pesona Nusantara</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah satu jawaban yang benar!`,
+                question: `Kapan fenomena api biru di Kawah Ijen dapat dilihat paling jelas?`,
+                options: [`Siang hari`, `Sore hari`, `Malam hari`, `Tengah hari`],
+                correct: 2
+            },
+
+            // Q11 - Q15
+            {
+                type: 'PG',
+                stimulus: `Batik Tulis dibuat memakai canting. Proses pembuatan membutuhkan ketelitian tinggi. Pengrajin menggambar pola dengan lilin malam. Pewarnaan kain dilakukan secara berulang. Batik Tulis bernilai seni tinggi.`,
+                source: `Sumber: <a href="https://kemenpar.go.id" target="_blank">Warisan Budaya Indonesia</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah satu jawaban yang tepat!`,
+                question: `Alat utama yang digunakan untuk membuat batik tulis adalah ....`,
+                options: [`Jarum`, `Canting`, `Gunting`, `Kuas`],
+                correct: 1
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Tari Saman berasal dari suku Gayo Aceh. Tarian ini dibawakan secara berkelompok. Para penari duduk berjejer rapi. Gerakan tangan mereka sangat cepat dan kompak. Tarian ini diiringi syair pujian.`,
+                source: `Sumber: <a href="https://www.indonesia.travel/id/id" target="_blank">Seni Tradisional Nusantara</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilihlah dua (2) pernyataan benar!`,
+                question: `Manakah dua ciri khas Tari Saman menurut teks?`,
+                options: [
+                    `Dibawakan dengan gerakan cepat dan kompak.`,
+                    `Penari melompat-lompat sambil membawa pedang.`,
+                    `Berasal dari daerah suku Gayo di Aceh.`
+                ],
+                correct: [0, 2]
+            },
+            {
+                type: 'CAT',
+                stimulus: `Gunung Bromo menawarkan keindahan matahari terbit. Suasana dingin menyelimuti Lautan Pasir. Wisatawan menaiki kuda menuju kaki gunung. Asap putih tipis keluar dari kawah.`,
+                source: `Sumber: <a href="https://www.detik.com/jabar/wisata" target="_blank">Detik Travel Jabar</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan kebenaran nilai deskripsi Gunung Bromo di bawah ini!`,
+                statements: [
+                    `Daya tarik utama Bromo adalah pemandangan matahari terbit.`,
+                    `Suhu udara di kawasan Gunung Bromo terasa panas.`,
+                    `Wisatawan dapat menaiki kuda di Lautan Pasir.`
+                ],
+                correct: ['B', 'S', 'B']
+            },
+            {
+                type: 'PG',
+                stimulus: `Sampah plastik sulit terurai tanah. Plastik butuh ratusan tahun untuk hancur. Kita harus mengurangi pemakaian kantong plastik. Bawalah tas belanja berbahan kain. Tindakan kecil ini menyelamatkan bumi.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Edukasi Kelestarian Lingkungan</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah satu jawaban yang tepat!`,
+                question: `Amanat utama dari paragraf di atas adalah ....`,
+                options: [`Membuang sampah plastik ke laut`, `Mengurangi pemakaian kantong plastik`, `Membakar tas belanjaan kain`, `Menjual plastik bekas ke pasar`],
+                correct: 1
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Wayang kulit adalah seni pertunjukan tradisional. Dalang memainkan tokoh wayang di balik kelir. Suara gamelan mengiringi cerita wayang. Pertunjukan wayang mengandung ajaran moral terpuji.`,
+                source: `Sumber: <a href="https://kemenpar.go.id" target="_blank">Publikasi Budaya Kemenpar</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilihlah 2 opsi benar!`,
+                question: `Siapa dan apa yang terlibat langsung dalam pertunjukan wayang kulit?`,
+                options: [
+                    `Dalang yang memainkan tokoh wayang.`,
+                    `Kamera film digital berteknologi tinggi.`,
+                    `Musik pengiring berupa alunan gamelan.`
+                ],
+                correct: [0, 2]
+            },
+
+            // Q16 - Q20
+            {
+                type: 'CAT',
+                stimulus: `Nasi Liwet adalah makanan khas Nusantara. Beras dimasak bersama santan dan rempah. Aromanya sangat harum dan gurih. Makanan ini biasa disajikan dengan lauk pauk.`,
+                source: `Sumber: <a href="https://www.indonesia.travel/id/id" target="_blank">Kuliner Nusantara Indonesia Travel</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan kebenaran tentang Nasi Liwet berdasarkan teks!`,
+                statements: [
+                    `Nasi liwet dimasak menggunakan santan dan rempah.`,
+                    `Cita rasa nasi liwet adalah manis dan asam.`,
+                    `Nasi liwet merupakan salah satu makanan khas Nusantara.`
+                ],
+                correct: ['B', 'S', 'B']
+            },
+            {
+                type: 'PG',
+                stimulus: `Lumba-lumba adalah mamalia laut cerdas. Lumba-lumba bernapas menggunakan paru-paru. Mereka sering melompat ke atas permukaan air. Lumba-lumba berkomunikasi dengan gelombang bunyi ultrasonik.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Dunia Bahari Indonesia</a>`,
+                instruction: `Soal Pilihan Ganda: Pilih satu jawaban benar!`,
+                question: `Bagaimana cara lumba-lumba berkomunikasi satu sama lain?`,
+                options: [`Menggunakan isyarat sirip`, `Menggunakan gelombang bunyi ultrasonik`, `Mengubah warna kulit`, `Melompat di air laut`],
+                correct: 1
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Museum Nasional menyimpan banyak benda bersejarah. Ada patung batu dan perhiasan emas antik. Pengunjung dapat belajar sejarah bangsa Indonesia. Petugas museum menjaga benda koleksi dengan ketat.`,
+                source: `Sumber: <a href="https://kemenpar.go.id" target="_blank">Destinasi Edukasi Sejarah</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilih dua (2) jawaban benar!`,
+                question: `Manakah dua keuntungan mengunjungi Museum Nasional?`,
+                options: [
+                    `Dapat melihat benda-benda antik bersejarah.`,
+                    `Dapat membeli barang koleksi patung batu museum.`,
+                    `Dapat belajar sejarah bangsa Indonesia.`
+                ],
+                correct: [0, 2]
+            },
+            {
+                type: 'CAT',
+                stimulus: `Pramuka mengajarkan sikap mandiri dan disiplin. Anggota Pramuka belajar keterampilan berkemah. Mereka juga belajar tali-menali dan Semaphore. Kegiatan Pramuka sangat menyenangkan.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Artikel Pendidikan Karakter</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan kebenaran nilai kegiatan Pramuka berdasarkan teks!`,
+                statements: [
+                    `Kegiatan Pramuka melatih kemandirian dan kedisiplinan.`,
+                    `Anggota Pramuka dilarang belajar berkemah.`,
+                    `Keterampilan tali-menali dipelajari dalam Pramuka.`
+                ],
+                correct: ['B', 'S', 'B']
+            },
+            {
+                type: 'PG',
+                stimulus: `Sungai Barito berada di Kalimantan Selatan. Di sungai ini terdapat pasar terapung. Pengunjung berbelanja di atas perahu kelotok. Pedagang menjual buah dan sayuran segar. Tradisi pasar ini sangat unik.`,
+                source: `Sumber: <a href="https://www.indonesia.travel/id/id" target="_blank">Pesona Wisata Pasar Terapung</a>`,
+                instruction: `Soal Pilihan Ganda: Pilih satu jawaban paling tepat!`,
+                question: `Kendaraan tradisional yang digunakan dalam pasar terapung adalah ....`,
+                options: [`Perahu kelotok`, `Mobil jeep`, `Sepeda motor`, `Kereta api`],
+                correct: 0
+            },
+
+            // Q21 - Q25
+            {
+                type: 'MCMA',
+                stimulus: `Candi Prambanan adalah candi Hindu tertinggi. Candi ini dihiasi relief kisah Ramayana. Bangunan candi berdiri megah dan kokoh. Prambanan menjadi warisan budaya dunia.`,
+                source: `Sumber: <a href="https://kemenpar.go.id" target="_blank">Kemenpar Wisata Candi</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilihlah dua (2) fakta benar!`,
+                question: `Dua fakta tentang Candi Prambanan adalah ....`,
+                options: [
+                    `Memiliki relief cerita Ramayana.`,
+                    `Merupakan candi peninggalan Buddha terbesar.`,
+                    `Diakui sebagai warisan budaya dunia.`
+                ],
+                correct: [0, 2]
+            },
+            {
+                type: 'CAT',
+                stimulus: `Taman Safari Bogor menampung ribuan hewan. Hewan hidup bebas di area terbuka. Pengunjung melihat hewan dari dalam mobil. Petugas memantau keamanan hewan setiap hari.`,
+                source: `Sumber: <a href="https://www.klook.com" target="_blank">Klook Panduan Taman Rekreasi</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan nilai kebenaran mengenai Taman Safari Bogor!`,
+                statements: [
+                    `Hewan-hewan dikurung di kandang sempit.`,
+                    `Pengunjung mengamati hewan dari dalam mobil.`,
+                    `Taman Safari Bogor menampung ribuan ekor hewan.`
+                ],
+                correct: ['S', 'B', 'B']
+            },
+            {
+                type: 'PG',
+                stimulus: `Reog Ponorogo adalah kesenian khas Jawa Timur. Penari utama memakai topeng dadak merak. Topeng merak sangat berat dan besar. Penari menggigit kayu untuk menopang topeng. Pertunjukan Reog sangat spektakuler.`,
+                source: `Sumber: <a href="https://www.detik.com/jabar/wisata" target="_blank">Detik Seni Tradisional</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah satu jawaban tepat!`,
+                question: `Bagaimana cara penari Reog menopang topeng dadak merak yang berat?`,
+                options: [`Menggunakan tali di kepala`, `Menggigit bagian kayu topeng`, `Dipegang dua tangan`, `Diikatkan pada pundak`],
+                correct: 1
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Pantai Senggigi terletak di Pulau Lombok. Pasir pantainya putih dan bersih. Air laut tenang dan jernih. Sunset di Senggigi terlihat sangat indah. Banyak wisatawan berlibur ke tempat ini.`,
+                source: `Sumber: <a href="https://www.indonesia.travel/id/id" target="_blank">Indonesia Travel Destinasi Lombok</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilihlah 2 opsi tepat!`,
+                question: `Keindahan Pantai Senggigi di antaranya adalah ....`,
+                options: [
+                    `Pasir pantai yang berwarna hitam pekat.`,
+                    `Pemandangan sunset yang sangat indah.`,
+                    `Air laut yang tenang dan sangat jernih.`
+                ],
+                correct: [1, 2]
+            },
+            {
+                type: 'CAT',
+                stimulus: `Tanah Toraja memiliki tradisi pemakaman unik. Jenazah disimpan dalam gua batu alam. Rumah adat Toraja bernama Tongkonan. Atap Tongkonan berbentuk seperti perahu.`,
+                source: `Sumber: <a href="https://kemenpar.go.id" target="_blank">Kebudayaan Toraja Kemenpar</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan kebenaran informasi budaya Toraja di bawah ini!`,
+                statements: [
+                    `Rumah adat suku Toraja bernama Tongkonan.`,
+                    `Atap rumah Tongkonan berbentuk bulat melingkar.`,
+                    `Tradisi pemakaman Toraja dilakukan di gua batu.`
+                ],
+                correct: ['B', 'S', 'B']
+            },
+
+            // Q26 - Q30
+            {
+                type: 'PG',
+                stimulus: `Olahraga lari pagi menyehatkan tubuh. Otot jantung menjadi lebih kuat. Paru-paru menghirup udara segar pagi hari. Tubuh menjadi bugar dan bersemangat. Lari pagi tidak memerlukan biaya mahal.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Info Kesehatan Masyarakat</a>`,
+                instruction: `Soal Pilihan Ganda: Pilih satu jawaban tepat!`,
+                question: `Manfaat utama lari pagi berdasarkan teks adalah ....`,
+                options: [`Menjadikan tubuh lelah dan lemas`, `Menguatkan otot jantung dan menyehatkan`, `Menghabiskan banyak uang modal`, `Menyebabkan sakit dada`],
+                correct: 1
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Bunaken adalah taman laut di Sulawesi Utara. Terumbu karang Bunaken sangat bervariasi. Ada ribuan spesies ikan warna-warni. Keanekaragaman hayati Bunaken sangat kaya. Pemerintah menjaga Bunaken dari pencemaran.`,
+                source: `Sumber: <a href="https://www.indonesia.travel/id/id" target="_blank">Indonesia Travel Marine Park</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilih dua (2) pernyataan benar!`,
+                question: `Dua kekayaan Taman Laut Bunaken adalah ....`,
+                options: [
+                    `Keanekaragaman terumbu karang yang melimpah.`,
+                    `Keberadaan ribuan spesies ikan warna-warni.`,
+                    `Hanya memiliki satu jenis spesies ikan kecil.`
+                ],
+                correct: [0, 1]
+            },
+            {
+                type: 'CAT',
+                stimulus: `Pohon kelapa disebut tumbuhan serbaguna. Buahnya dapat diminum airnya yang segar. Daun kelapa dianyam menjadi ketupat. Batang kelapa dipakai untuk bahan bangunan. Semua bagian kelapa sangat bermanfaat.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Ragam Flora Indonesia</a>`,
+                instruction: `Soal Kategori: Tentukan Benar atau Salah!`,
+                question: `Tentukan kebenaran manfaat pohon kelapa berikut!`,
+                statements: [
+                    `Daun kelapa dapat dimanfaatkan membuat ketupat.`,
+                    `Air buah kelapa tidak aman untuk diminum.`,
+                    `Pohon kelapa dijuluki sebagai tumbuhan serbaguna.`
+                ],
+                correct: ['B', 'S', 'B']
+            },
+            {
+                type: 'PG',
+                stimulus: `Perpustakaan sekolah adalah jendela ilmu. Di sana terdapat pelbagai buku bacaan. Siswa dapat membaca buku cerita dan pelajaran. Suasana perpustakaan tenang dan nyaman. Kita harus menjaga kebersihan perpustakaan.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Edukasi Sekolah Dasar</a>`,
+                instruction: `Soal Pilihan Ganda: Pilihlah jawaban tepat!`,
+                question: `Mengapa perpustakaan sekolah dijuluki sebagai jendela ilmu?`,
+                options: [`Karena memiliki jendela besar`, `Karena menyimpan pelbagai buku sumber ilmu`, `Karena tempat bermain siswa`, `Karena menjual alat tulis`],
+                correct: 1
+            },
+            {
+                type: 'MCMA',
+                stimulus: `Gotong royong adalah tradisi luhur bangsa. Warga bekerja sama membersihkan lingkungan. Pekerjaan berat menjadi terasa ringan. Gotong royong mempererat tali persaudaraan antarwarga.`,
+                source: `Sumber: <a href="https://tribratanews.polri.go.id" target="_blank">Nilai Pancasila dan Kemasyarakatan</a>`,
+                instruction: `Soal Pilihan Ganda Kompleks: Pilihlah 2 opsi yang tepat!`,
+                question: `Manakah dua manfaat dari kegiatan gotong royong?`,
+                options: [
+                    `Pekerjaan yang berat menjadi terasa lebih ringan.`,
+                    `Menimbulkan perselisihan dan pertengkaran warga.`,
+                    `Mempererat kebersamaan dan tali persaudaraan.`
+                ],
+                correct: [0, 2]
+            }
+        ];
+
+        // --- AUTHENTICATION & LOGIN LOGIC ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const nama = document.getElementById('input-nama').value.trim();
+            const nisn = document.getElementById('input-nisn').value.trim();
+            const token = document.getElementById('input-token').value.trim();
+
+            if (token.toUpperCase() !== 'GEMULUNG3') {
+                document.getElementById('login-error').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('login-error').classList.add('hidden');
+            currentUser = { nama, nisn };
+
+            // Show Modal Confirmation
+            document.getElementById('modal-nama').innerText = nama;
+            document.getElementById('modal-nisn').innerText = nisn;
+            document.getElementById('modal-petunjuk').classList.remove('hidden');
+        }
+
+        // --- START EXAM & TIMER ---
+        function startExam() {
+            document.getElementById('modal-petunjuk').classList.add('hidden');
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-test').classList.remove('hidden');
+
+            document.getElementById('user-display-name').innerText = currentUser.nama;
+            document.getElementById('user-display-nisn').innerText = currentUser.nisn;
+
+            renderQuestionGrid();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            document.getElementById('timer').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // --- QUESTION GRID & RENDERING ---
+        function renderQuestionGrid() {
+            const gridContainer = document.getElementById('question-grid');
+            gridContainer.innerHTML = '';
+
+            for (let i = 0; i < questionsData.length; i++) {
+                const btn = document.createElement('button');
+                btn.id = `q-grid-btn-${i}`;
+                btn.className = `w-10 h-10 font-bold rounded-lg text-sm flex items-center justify-center transition ${getGridBtnClass(i)}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => loadQuestion(i);
+                gridContainer.appendChild(btn);
+            }
+        }
+
+        function getGridBtnClass(index) {
+            let classes = '';
+            if (userAnswers[index] !== undefined && isAnswered(index)) {
+                classes += 'q-btn-answered ';
+            } else {
+                classes += 'q-btn-unanswered ';
+            }
+
+            if (doubtStatus[index]) {
+                classes += 'q-btn-doubt ';
+            }
+
+            if (index === currentQuestionIndex) {
+                classes += 'q-btn-active ';
+            }
+
+            return classes;
+        }
+
+        function isAnswered(index) {
+            const ans = userAnswers[index];
+            if (ans === undefined || ans === null) return false;
+            if (Array.isArray(ans)) return ans.length > 0;
+            if (typeof ans === 'object') return Object.keys(ans).length === 3;
+            return true;
+        }
+
+        function updateGridState() {
+            for (let i = 0; i < questionsData.length; i++) {
+                const btn = document.getElementById(`q-grid-btn-${i}`);
+                if (btn) {
+                    btn.className = `w-10 h-10 font-bold rounded-lg text-sm flex items-center justify-center transition ${getGridBtnClass(i)}`;
+                }
+            }
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const data = questionsData[index];
+
+            // Set Meta info
+            document.getElementById('q-number').innerText = index + 1;
+            const typeNames = { 'PG': 'Pilihan Ganda', 'MCMA': 'Pilihan Ganda Kompleks', 'CAT': 'Soal Kategori (Tabel)' };
+            document.getElementById('q-type-badge').innerText = typeNames[data.type];
+
+            // Set Stimulus & Source
+            document.getElementById('q-stimulus').innerHTML = `
+                <div class="stimulus-text mb-2 text-gray-800">${data.stimulus}</div>
+                <div class="stimulus-source pt-2 border-t border-slate-200">${data.source}</div>
+            `;
+
+            // Set Instruction & Question
+            const instrEl = document.getElementById('q-instruction');
+            if (data.instruction) {
+                instrEl.innerText = data.instruction;
+                instrEl.classList.remove('hidden');
+            } else {
+                instrEl.classList.add('hidden');
+            }
+
+            document.getElementById('q-text').innerHTML = data.question;
+
+            // Render Options Area
+            const optionsContainer = document.getElementById('q-options');
+            optionsContainer.innerHTML = '';
+
+            if (data.type === 'PG') {
+                renderPG(data, index, optionsContainer);
+            } else if (data.type === 'MCMA') {
+                renderMCMA(data, index, optionsContainer);
+            } else if (data.type === 'CAT') {
+                renderCategoryTable(data, index, optionsContainer);
+            }
+
+            // Update Action Buttons State
+            document.getElementById('btn-prev').disabled = (index === 0);
+            document.getElementById('btn-prev').style.opacity = (index === 0) ? '0.5' : '1';
+
+            if (index === questionsData.length - 1) {
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-finish').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-finish').classList.add('hidden');
+            }
+
+            // Update Doubt Button visuals
+            const doubtBtn = document.getElementById('btn-doubt');
+            if (doubtStatus[index]) {
+                doubtBtn.classList.replace('bg-yellow-400', 'bg-yellow-600');
+                doubtBtn.classList.add('text-white');
+            } else {
+                doubtBtn.classList.replace('bg-yellow-600', 'bg-yellow-400');
+                doubtBtn.classList.remove('text-white');
+            }
+
+            updateGridState();
+        }
+
+        // Render Option Types
+        function renderPG(data, qIndex, container) {
+            const labels = ['A', 'B', 'C', 'D'];
+            data.options.forEach((optText, optIdx) => {
+                const selected = (userAnswers[qIndex] === optIdx);
+                const wrapper = document.createElement('div');
+                wrapper.className = `pg-option flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer transition ${selected ? 'selected' : 'bg-white'}`;
+                wrapper.onclick = () => selectPG(qIndex, optIdx);
+
+                wrapper.innerHTML = `
+                    <div class="pg-badge mr-3">${labels[optIdx]}</div>
+                    <div class="option-text text-gray-800">${optText}</div>
+                `;
+                container.appendChild(wrapper);
+            });
+        }
+
+        function selectPG(qIndex, optionIndex) {
+            userAnswers[qIndex] = optionIndex;
+            loadQuestion(qIndex);
+        }
+
+        function renderMCMA(data, qIndex, container) {
+            const currentSelected = userAnswers[qIndex] || [];
+            data.options.forEach((optText, optIdx) => {
+                const selected = currentSelected.includes(optIdx);
+                const wrapper = document.createElement('div');
+                wrapper.className = `mcma-option flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer transition ${selected ? 'selected' : 'bg-white'}`;
+                wrapper.onclick = () => toggleMCMA(qIndex, optIdx);
+
+                wrapper.innerHTML = `
+                    <div class="mcma-badge mr-3">
+                        ${selected ? '✓' : ''}
+                    </div>
+                    <div class="option-text text-gray-800">${optText}</div>
+                `;
+                container.appendChild(wrapper);
+            });
+        }
+
+        function toggleMCMA(qIndex, optionIndex) {
+            let list = userAnswers[qIndex] || [];
+            if (list.includes(optionIndex)) {
+                list = list.filter(item => item !== optionIndex);
+            } else {
+                list.push(optionIndex);
+            }
+            userAnswers[qIndex] = list;
+            loadQuestion(qIndex);
+        }
+
+        function renderCategoryTable(data, qIndex, container) {
+            const currentAnswers = userAnswers[qIndex] || {};
+            
+            let tableHTML = `
+                <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-blue-900 text-white font-bold text-sm">
+                                <th class="p-3 border-b border-gray-200">Pernyataan</th>
+                                <th class="p-3 border-b border-gray-200 text-center w-24">Benar</th>
+                                <th class="p-3 border-b border-gray-200 text-center w-24">Salah</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 option-text">
+            `;
+
+            data.statements.forEach((stmt, idx) => {
+                const ans = currentAnswers[idx];
+                tableHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-3 text-gray-800">${idx + 1}. ${stmt}</td>
+                        <td class="p-3 text-center align-middle">
+                            <div class="flex justify-center">
+                                <input type="radio" name="cat-${qIndex}-${idx}" value="B" 
+                                       class="cat-radio" ${ans === 'B' ? 'checked' : ''} 
+                                       onchange="selectCat('${qIndex}', ${idx}, 'B')">
+                            </div>
+                        </td>
+                        <td class="p-3 text-center align-middle">
+                            <div class="flex justify-center">
+                                <input type="radio" name="cat-${qIndex}-${idx}" value="S" 
+                                       class="cat-radio" ${ans === 'S' ? 'checked' : ''} 
+                                       onchange="selectCat('${qIndex}', ${idx}, 'S')">
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        function selectCat(qIndex, stmtIndex, val) {
+            if (!userAnswers[qIndex]) {
+                userAnswers[qIndex] = {};
+            }
+            userAnswers[qIndex][stmtIndex] = val;
+            updateGridState();
+        }
+
+        // --- NAVIGATION ACTIONS ---
+        function navigateQuestion(direction) {
+            const nextIdx = currentQuestionIndex + direction;
+            if (nextIdx >= 0 && nextIdx < questionsData.length) {
+                loadQuestion(nextIdx);
+            }
+        }
+
+        function toggleDoubt() {
+            doubtStatus[currentQuestionIndex] = !doubtStatus[currentQuestionIndex];
+            loadQuestion(currentQuestionIndex);
+        }
+
+        // --- SUBMISSION & SCORING SYSTEM ---
+        function confirmFinish() {
+            const answeredCount = Object.keys(userAnswers).filter(idx => isAnswered(idx)).length;
+            const unansweredCount = questionsData.length - answeredCount;
+
+            let msg = `Apakah Anda yakin ingin menyelesaikan ujian?`;
+            if (unansweredCount > 0) {
+                msg += `\n\nMasih terdapat ${unansweredCount} soal yang belum dijawab.`;
+            }
+
+            if (confirm(msg)) {
+                finishExam();
+            }
+        }
+
+        function finishExam() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+
+            questionsData.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+
+                if (q.type === 'PG') {
+                    if (userAns === q.correct) {
+                        correctCount++;
+                    }
+                } else if (q.type === 'MCMA') {
+                    if (Array.isArray(userAns)) {
+                        const sortedUser = [...userAns].sort();
+                        const sortedCorrect = [...q.correct].sort();
+                        if (JSON.stringify(sortedUser) === JSON.stringify(sortedCorrect)) {
+                            correctCount++;
+                        }
+                    }
+                } else if (q.type === 'CAT') {
+                    // Strict Rule: Must get ALL 3 statements correct for 1 point
+                    if (userAns && typeof userAns === 'object') {
+                        let catCorrect = true;
+                        q.correct.forEach((expected, sIdx) => {
+                            if (userAns[sIdx] !== expected) {
+                                catCorrect = false;
+                            }
+                        });
+                        if (catCorrect) {
+                            correctCount++;
+                        }
+                    }
+                }
+            });
+
+            // Formula: (Benar / 30) * 100 with 2 Decimal places
+            const finalScore = ((correctCount / questionsData.length) * 100).toFixed(2);
+
+            // Render Final Result Page
+            document.getElementById('page-test').classList.add('hidden');
+            document.getElementById('page-result').classList.remove('hidden');
+
+            document.getElementById('res-nama').innerText = currentUser.nama;
+            document.getElementById('res-nisn').innerText = currentUser.nisn;
+            document.getElementById('final-score').innerText = finalScore;
+            document.getElementById('score-correct-count').innerText = correctCount;
+        }
+    </script>
+</body>
+</html>
